@@ -2,6 +2,18 @@
 
 一个专业、交互式、前后端分离的中国个人所得税（年度累计预扣预缴）计算器。
 
+## 📑 目录
+
+- [🖼️ 项目预览](#-项目预览)
+- [🚀 快速开始](#-快速开始)
+- [📱 使用说明](#-使用说明)
+- [⚙️ 高级配置](#️-高级配置)
+- [🔧 API接口](#-api接口)
+- [📱 响应式设计](#-响应式设计)
+- [📁 项目结构](#-项目结构)
+- [✅ 最新改进](#-最新改进)
+- [⚠️ 免责声明](#️-免责声明)
+
 ## ✨ 特性
 
 - 🧮 **精准计算**: 基于2019年新个税法，严格按累计预扣预缴法计算
@@ -24,6 +36,28 @@
 - **Tailwind CSS**: 实用优先的CSS框架
 - **Chart.js**: 数据可视化图表库
 - **Vanilla JavaScript**: 原生ES6+，无额外依赖
+
+## 🖼️ 项目预览
+
+### 桌面端界面
+![主界面概览](https://maas-log-prod.cn-wlcb.ufileos.com/anthropic/aef5e8d7-ce6f-4b78-901c-f2992c30e460/d6897467b918bff9b91b6b90143cc274.png?UCloudPublicKey=TOKEN_e15ba47a-d098-4fbd-9afc-a0dcf0e4e621&Expires=1761915209&Signature=4nuRKyaAzaw/bVyHUtaCNeSWXC4=)
+
+专业的桌面端界面，包含完整的参数设置面板和实时计算结果展示。
+
+### 计算结果展示
+![计算结果](https://maas-log-prod.cn-wlcb.ufileos.com/anthropic/aef5e8d7-ce6f-4b78-901c-f2992c30e460/9f573e903cacbe4ae33a30bbc99e239a.png?UCloudPublicKey=TOKEN_e15ba47a-d098-4fbd-9afc-a0dcf0e4e621&Expires=1761915245&Signature=x+giiBuiJZQYCPkHur32rnw1xjc=)
+
+详细的计算结果，包括年度汇总、12个月明细表格和五险一金缴纳明细。
+
+### API 文档界面
+![API文档](https://maas-log-prod.cn-wlcb.ufileos.com/anthropic/aef5e8d7-ce6f-4b78-901c-f2992c30e460/39ff4f6dd837cf4c81a748eb2fae1c59.png?UCloudPublicKey=TOKEN_e15ba47a-d098-4fbd-9afc-a0dcf0e4e621&Expires=1761915254&Signature=jPEwXodna4bisPeRd9VhiftETOQ=)
+
+基于 Swagger UI 的专业 API 文档，提供完整的接口说明和在线测试功能。
+
+### 移动端响应式设计
+![移动端界面](https://maas-log-prod.cn-wlcb.ufileos.com/anthropic/aef5e8d7-ce6f-4b78-901c-f2992c30e460/452b283443f5fb5f429685ce964d0b63.png?UCloudPublicKey=TOKEN_e15ba47a-d098-4fbd-9afc-a0dcf0e4e621&Expires=1761915268&Signature=FKuvpzp9KPhVqPdLXP43ssEyk6Y=)
+
+完全响应式设计，在移动设备上同样提供优秀的用户体验。
 
 ## 🚀 快速开始
 
@@ -167,6 +201,34 @@ make check-api
 3. **设置专项扣除**: 填写适用的专项附加扣除金额
 4. **查看结果**: 自动显示年度汇总、月度明细和可视化图表
 
+### 📊 计算结果展示
+
+应用计算完成后会显示三个主要部分：
+
+#### 📈 年度汇总
+- 年度税前总收入
+- 年度个税总额
+- 年度税后总收入
+- 实际有效税率
+- 五险一金缴纳明细
+
+#### 📋 月度详情表
+完整的12个月数据，包含：
+- 税前工资
+- 五险一金个人/公司部分
+- 专项附加扣除
+- 累计应纳税所得额
+- 适用税率
+- 当月个税
+- 税后收入
+
+#### 📊 数据可视化
+- 堆叠条形图展示月度收入构成
+- 清晰区分税后收入、个税、五险一金
+- 交互式图例和工具提示
+
+![示例计算结果](https://maas-log-prod.cn-wlcb.ufileos.com/anthropic/aef5e8d7-ce6f-4b78-901c-f2992c30e460/9f573e903cacbe4ae33a30bbc99e239a.png?UCloudPublicKey=TOKEN_e15ba47a-d098-4fbd-9afc-a0dcf0e4e621&Expires=1761915245&Signature=x+giiBuiJZQYCPkHur32rnw1xjc=)
+
 ### 主要功能模块
 
 #### 📊 年度汇总
@@ -222,6 +284,10 @@ make check-api
 
 ## 🔧 API接口
 
+应用提供完整的 RESTful API，配合专业的 Swagger 文档界面：
+
+![API文档界面](https://maas-log-prod.cn-wlcb.ufileos.com/anthropic/aef5e8d7-ce6f-4b78-901c-f2992c30e460/39ff4f6dd837cf4c81a748eb2fae1c59.png?UCloudPublicKey=TOKEN_e15ba47a-d098-4fbd-9afc-a0dcf0e4e621&Expires=1761915254&Signature=jPEwXodna4bisPeRd9VhiftETOQ=)
+
 ### 计算接口
 ```
 POST /calculate
@@ -273,6 +339,19 @@ Content-Type: application/json
   "monthly_details": [...]
 }
 ```
+
+## 📱 响应式设计
+
+应用采用完全响应式设计，在所有设备上都能提供优秀的用户体验：
+
+![移动端响应式设计](https://maas-log-prod.cn-wlcb.ufileos.com/anthropic/aef5e8d7-ce6f-4b78-901c-f2992c30e460/452b283443f5fb5f429685ce964d0b63.png?UCloudPublicKey=TOKEN_e15ba47a-d098-4fbd-9afc-a0dcf0e4e621&Expires=1761915268&Signature=FKuvpzp9KPhVqPdLXP43ssEyk6Y=)
+
+### 📱 移动端特性
+- **触摸优化**: 适配移动设备的触摸操作
+- **自适应布局**: 根据屏幕尺寸自动调整界面布局
+- **完整功能**: 移动端同样支持所有计算功能
+- **简洁界面**: 针对小屏幕优化的用户界面
+- **快速计算**: 移动端优化的性能表现
 
 ## 📁 项目结构
 
