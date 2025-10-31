@@ -1,0 +1,69 @@
+[project]
+name = "china-tax-tool"
+version = "1.0.0"
+description = "中国个人所得税（年度累计预扣预缴）计算器"
+authors = [
+    {name = "ChinaTaxTool Developer", email = "dev@chinataxtool.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+keywords = ["tax", "china", "income-tax", "calculator", "finance"]
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "python-multipart>=0.0.6"
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.25.0",
+    "requests>=2.31.0",
+    "ruff>=0.1.0",
+    "black>=23.0.0",
+    "mypy>=1.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/StanleyChanH/ChinaTaxTool"
+Repository = "https://github.com/StanleyChanH/ChinaTaxTool.git"
+Documentation = "https://github.com/StanleyChanH/ChinaTaxTool/blob/main/README.md"
+
+[project.scripts]
+china-tax-tool = "app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "app.py",
+    "index.html",
+    "README.md",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "B", "C90"]
+ignore = ["E501"]
