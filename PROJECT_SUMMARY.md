@@ -3,7 +3,9 @@
 ## 🎯 项目完成情况
 
 ✅ **项目名称**: ChinaTaxTool (中国个人所得税计算器)
+✅ **开发者**: StanleyChanH
 ✅ **开发时间**: 2024年
+✅ **许可证**: MIT License
 ✅ **技术栈**: Python FastAPI + HTML/CSS/JavaScript + Tailwind CSS + Chart.js
 
 ## 📋 功能实现清单

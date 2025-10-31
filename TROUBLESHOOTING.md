@@ -1,5 +1,8 @@
 # 故障排除指南
 
+Copyright (c) 2024 StanleyChanH
+Licensed under the MIT License
+
 ## 常见问题及解决方案
 
 ### 1. "Failed to fetch" 错误

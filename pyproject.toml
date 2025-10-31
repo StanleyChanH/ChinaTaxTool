@@ -3,7 +3,7 @@ name = "china-tax-tool"
 version = "1.0.0"
 description = "中国个人所得税（年度累计预扣预缴）计算器"
 authors = [
-    {name = "ChinaTaxTool Developer", email = "dev@chinataxtool.com"}
+    {name = "StanleyChanH", email = "stanleychan@example.com"}
 ]
 readme = "README.md"
 license = {text = "MIT"}

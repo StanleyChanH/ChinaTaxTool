@@ -1,5 +1,8 @@
 # 基于 uv 的项目架构说明
 
+Copyright (c) 2024 StanleyChanH
+Licensed under the MIT License
+
 ## 🏗️ 项目架构概览
 
 本项目采用现代化的Python包管理和项目结构，完全基于 `uv` 进行依赖管理和任务执行。

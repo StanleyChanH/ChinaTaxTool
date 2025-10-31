@@ -1,6 +1,9 @@
 """
 中国个人所得税（年度累计预扣预缴）计算器后端API
 实现2019年新个税法的累计预扣预缴法计算
+
+Copyright (c) 2024 StanleyChanH
+Licensed under the MIT License
 """
 
 import argparse

@@ -1,5 +1,8 @@
 # 中国个人所得税计算器 Makefile
 # 使用 uv 进行包管理和任务执行
+#
+# Copyright (c) 2024 StanleyChanH
+# Licensed under the MIT License
 
 .PHONY: help install start dev test lint format clean check-api run-docs
 

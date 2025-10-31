@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
 中国个人所得税计算器API测试脚本
+
+Copyright (c) 2024 StanleyChanH
+Licensed under the MIT License
 """
 
 import requests
