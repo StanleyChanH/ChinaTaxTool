@@ -103,11 +103,6 @@ start.bat
 ./start_linux.sh
 ```
 
-#### 🔧 通用启动脚本 (适用于所有系统)
-```bash
-./start_uv.sh
-```
-
 > 💡 **推荐使用各系统专用的启动脚本**，它们会自动处理系统特定的配置和优化。
 
 **所有启动脚本都会自动：**
@@ -440,8 +435,6 @@ ChinaTaxTool/
 ├── PROJECT_SUMMARY.md        # 项目总结文档
 ├── TROUBLESHOOTING.md        # 故障排除指南
 ├── UV_ARCHITECTURE.md        # uv架构说明
-├── start.sh                  # 传统Linux启动脚本
-├── start_uv.sh               # uv通用启动脚本
 ├── start.bat                 # Windows一键启动脚本
 ├── start_macos.command       # macOS一键启动脚本
 ├── start_linux.sh            # Linux一键启动脚本

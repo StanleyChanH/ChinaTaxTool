@@ -24,7 +24,14 @@ python app.py
 
 #### 方法2: 使用一键启动脚本
 ```bash
-./start.sh
+# Linux
+./start_linux.sh
+
+# macOS
+./start_macos.command
+
+# Windows
+start.bat
 ```
 
 #### 方法3: 手动启动服务

@@ -32,8 +32,9 @@ ChinaTaxTool/
 ├── index.html                # 前端单页应用 (包含所有CSS和JS)
 ├── pyproject.toml           # 项目配置和依赖管理
 ├── Makefile                  # 任务自动化
-├── start_uv.sh              # uv版本启动脚本
-├── start.sh                 # 传统启动脚本 (备用)
+├── start.bat                 # Windows启动脚本
+├── start_macos.command       # macOS启动脚本
+├── start_linux.sh            # Linux启动脚本
 ├── test_api.py              # API测试脚本
 ├── PROJECT_SUMMARY.md       # 项目总结
 ├── TROUBLESHOOTING.md       # 故障排除指南
@@ -88,7 +89,7 @@ china-tax-tool = "app:main"
 
 ### 1. 一键启动 (推荐)
 ```bash
-./start_uv.sh
+./start_linux.sh (Linux) 或 ./start_macos.command (macOS) 或 start.bat (Windows)
 ```
 
 ### 2. Makefile命令

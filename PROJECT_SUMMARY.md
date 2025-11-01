@@ -30,7 +30,7 @@
 
 ### ✅ 项目配置
 - [x] **uv包管理**: 新一代Python包管理工具配置
-- [x] **一键启动**: start.sh脚本自动安装依赖并启动服务
+- [x] **跨平台启动**: Windows/macOS/Linux专用启动脚本
 - [x] **项目文档**: 完整的README和API文档
 - [x] **代码质量**: 清晰的代码结构和中文注释
 
@@ -108,7 +108,9 @@ git clone <repository-url>
 cd ChinaTaxTool
 
 # 2. 一键启动
-./start.sh
+# Linux: ./start_linux.sh
+# macOS: ./start_macos.command
+# Windows: start.bat
 
 # 3. 访问应用
 # 前端: http://localhost:3000
