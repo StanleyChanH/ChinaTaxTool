@@ -83,18 +83,44 @@ irm https://astral.sh/uv/install.ps1 | iex
 
 ### 🎯 一键启动 (推荐)
 
+根据您的操作系统选择对应的启动脚本：
+
+#### 🪟 Windows 用户
+双击运行或在命令行执行：
+```cmd
+start.bat
+```
+
+#### 🍎 macOS 用户
+双击运行或在终端执行：
 ```bash
-# 使用uv版本的启动脚本
+./start_macos.command
+```
+
+#### 🐧 Linux 用户
+在终端执行：
+```bash
+./start_linux.sh
+```
+
+#### 🔧 通用启动脚本 (适用于所有系统)
+```bash
 ./start_uv.sh
 ```
 
-启动脚本会自动：
-- 检查uv安装状态
+> 💡 **推荐使用各系统专用的启动脚本**，它们会自动处理系统特定的配置和优化。
+
+**所有启动脚本都会自动：**
+- 检查系统环境 (Python、uv安装状态)
+- 检测并显示系统信息
 - 同步项目依赖
+- 智能端口冲突检测和处理
 - 启动后端API服务
 - 启动前端HTTP服务器
 - 测试CORS跨域配置
 - 提供访问地址和使用说明
+- 发送桌面通知 (macOS/Linux)
+- 优雅的服务停止处理
 
 ### 🔧 手动启动
 
@@ -340,6 +366,53 @@ Content-Type: application/json
 }
 ```
 
+## 🔧 启动脚本特性
+
+### 🪟 Windows (start.bat)
+- **自动编码设置**: 支持中文显示
+- **进程管理**: 智能启动和停止服务
+- **错误处理**: 详细的错误提示和解决方案
+- **端口检测**: 自动检测端口占用情况
+- **兼容性**: 支持 Windows 7/8/10/11
+
+### 🍎 macOS (start_macos.command)
+- **系统检测**: 自动识别macOS版本
+- **桌面通知**: 服务启动后发送系统通知
+- **颜色输出**: 美观的终端彩色显示
+- **权限处理**: 自动处理文件执行权限
+- **兼容性**: 支持 macOS 10.14+
+
+### 🐧 Linux (start_linux.sh)
+- **发行版检测**: 自动识别Ubuntu/Debian/CentOS/Fedora/Arch等
+- **包管理器集成**: 针对不同发行版提供安装建议
+- **防火墙提示**: 智能检测和配置防火墙建议
+- **桌面通知**: 支持多种Linux桌面环境通知
+- **端口检查**: 使用多种工具检测端口占用
+
+### 🔧 故障排除
+
+如果启动脚本遇到问题，请参考：
+1. **TROUBLESHOOTING.md** - 详细故障排除指南
+2. **检查依赖**: 确保Python 3.8+和uv已正确安装
+3. **端口冲突**: 使用 `--port` 参数指定不同端口
+4. **权限问题**: Linux/macOS确保脚本有执行权限 (`chmod +x`)
+
+### 💡 高级用法
+
+```bash
+# 自定义端口启动
+uv run python app.py --port 8080
+
+# 开发模式（自动重载）
+uv run python app.py --reload
+
+# 多进程模式（生产环境）
+uv run python app.py --workers 4
+
+# 绑定到所有网络接口
+uv run python app.py --host 0.0.0.0
+```
+
 ## 📱 响应式设计
 
 应用采用完全响应式设计，在所有设备上都能提供优秀的用户体验：
@@ -357,10 +430,24 @@ Content-Type: application/json
 
 ```
 ChinaTaxTool/
-├── app.py              # FastAPI后端服务
-├── index.html          # 前端页面（包含所有CSS和JS）
-├── pyproject.toml      # 项目配置和依赖
-└── README.md          # 项目文档
+├── app.py                    # FastAPI后端服务
+├── index.html                # 前端页面（包含所有CSS和JS）
+├── pyproject.toml            # 项目配置和依赖
+├── LICENSE                   # MIT许可证文件
+├── README.md                 # 项目文档
+├── test_api.py               # API测试脚本
+├── Makefile                  # 构建和开发任务
+├── PROJECT_SUMMARY.md        # 项目总结文档
+├── TROUBLESHOOTING.md        # 故障排除指南
+├── UV_ARCHITECTURE.md        # uv架构说明
+├── start.sh                  # 传统Linux启动脚本
+├── start_uv.sh               # uv通用启动脚本
+├── start.bat                 # Windows一键启动脚本
+├── start_macos.command       # macOS一键启动脚本
+├── start_linux.sh            # Linux一键启动脚本
+├── .gitignore                # Git忽略文件配置
+├── .venv/                    # 虚拟环境目录（自动生成）
+└── uv.lock                   # 依赖锁定文件
 ```
 
 ## 🎯 设计原则
