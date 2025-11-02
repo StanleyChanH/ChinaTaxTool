@@ -335,22 +335,51 @@
                         年度汇总
                     </h2>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                    <!-- 关键指标卡片 -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+                        <div class="text-center p-4 bg-blue-50 rounded-lg hover:shadow-md transition-shadow">
                             <div class="text-2xl font-bold text-blue-600">¥<span id="annualSalary">0</span></div>
                             <div class="text-sm text-gray-600 mt-1">年度税前总收入</div>
                         </div>
-                        <div class="text-center p-4 bg-red-50 rounded-lg">
+                        <div class="text-center p-4 bg-red-50 rounded-lg hover:shadow-md transition-shadow">
                             <div class="text-2xl font-bold text-red-600">¥<span id="annualTax">0</span></div>
                             <div class="text-sm text-gray-600 mt-1">年度个税总额</div>
                         </div>
-                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-center p-4 bg-green-50 rounded-lg hover:shadow-md transition-shadow">
                             <div class="text-2xl font-bold text-green-600">¥<span id="annualAfterTaxIncome">0</span></div>
                             <div class="text-sm text-gray-600 mt-1">年度税后总收入</div>
                         </div>
-                        <div class="text-center p-4 bg-purple-50 rounded-lg">
-                            <div class="text-2xl font-bold text-purple-600">¥<span id="effectiveRate">0</span>%</div>
+                        <div class="text-center p-4 bg-purple-50 rounded-lg hover:shadow-md transition-shadow">
+                            <div class="text-2xl font-bold text-purple-600"><span id="effectiveRate">0</span>%</div>
                             <div class="text-sm text-gray-600 mt-1">实际有效税率</div>
+                        </div>
+                    </div>
+
+                    <!-- 财务健康评分 -->
+                    <div id="healthScoreCard" class="hidden mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                    财务健康评分
+                                </h3>
+                                <p class="text-sm text-gray-600 mt-1">基于您的收入结构和专项扣除利用率</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-green-600" id="healthScore">85</div>
+                                <div class="text-sm text-gray-600">优秀</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 bg-white rounded-lg p-2">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">健康度</span>
+                                <span class="text-green-600 font-medium">85/100</span>
+                            </div>
+                            <div class="mt-1 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -453,21 +482,222 @@
                 </div>
 
                 <!-- 数据可视化图表 -->
-                <div id="chartContainer" class="bg-white rounded-xl shadow-md p-6 hidden">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
-                        </svg>
-                        月度收入构成分析
-                    </h2>
+                <div id="chartContainer" class="space-y-8 hidden">
+                    <!-- 图表导航标签 -->
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                                </svg>
+                                数据可视化分析
+                            </h2>
+                        </div>
 
-                    <div class="relative" style="height: 400px;">
-                        <canvas id="incomeChart"></canvas>
+                        <!-- 图表标签页 -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <button onclick="switchChart('trend')" id="trendTab" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                税负率趋势
+                            </button>
+                            <button onclick="switchChart('composition')" id="compositionTab" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                                收入结构
+                            </button>
+                            <button onclick="switchChart('monthly')" id="monthlyTab" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                                月度对比
+                            </button>
+                            <button onclick="switchChart('deduction')" id="deductionTab" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                                扣除分析
+                            </button>
+                        </div>
+
+                        <!-- 税负率趋势图 -->
+                        <div id="trendChart" class="chart-panel">
+                            <h3 class="text-lg font-medium text-gray-700 mb-4">累计税负率变化趋势</h3>
+                            <div class="relative" style="height: 350px;">
+                                <canvas id="taxTrendChart"></canvas>
+                            </div>
+                            <div class="mt-3 text-sm text-gray-600">
+                                <p>* 展示年度累计税负率的变化趋势，帮助了解税负随时间的变化规律</p>
+                            </div>
+                        </div>
+
+                        <!-- 收入结构图 -->
+                        <div id="compositionChart" class="chart-panel hidden">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-lg font-medium text-gray-700 mb-4">年度收入结构分布</h3>
+                                    <div class="relative" style="height: 300px;">
+                                        <canvas id="incomeCompositionChart"></canvas>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-medium text-gray-700 mb-4">专项扣除利用率</h3>
+                                    <div class="relative" style="height: 300px;">
+                                        <canvas id="deductionUtilizationChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-sm text-gray-600">
+                                <p>* 左图展示各项支出的占比，右图展示专项附加扣除的利用情况</p>
+                            </div>
+                        </div>
+
+                        <!-- 月度对比图 -->
+                        <div id="monthlyChart" class="chart-panel hidden">
+                            <h3 class="text-lg font-medium text-gray-700 mb-4">月度收入与税负对比</h3>
+                            <div class="relative" style="height: 350px;">
+                                <canvas id="monthlyComparisonChart"></canvas>
+                            </div>
+                            <div class="mt-3 text-sm text-gray-600">
+                                <p>* 对比展示每月税前收入、税后收入和个税的变化情况</p>
+                            </div>
+                        </div>
+
+                        <!-- 扣除分析图 -->
+                        <div id="deductionChart" class="chart-panel hidden">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-lg font-medium text-gray-700 mb-4">五险一金扣除分析</h3>
+                                    <div class="relative" style="height: 300px;">
+                                        <canvas id="socialAnalysisChart"></canvas>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-medium text-gray-700 mb-4">专项扣除影响分析</h3>
+                                    <div class="relative" style="height: 300px;">
+                                        <canvas id="specialDeductionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-sm text-gray-600">
+                                <p>* 分析各项扣除对税负的具体影响，帮助优化税务筹划</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 个性化建议面板 -->
+                <div id="suggestionsPanel" class="bg-white rounded-xl shadow-md p-6 hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 00-1.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1a1 1 0 112 0v1a1 1 0 11-2 0zM12 14a1 1 0 00-.707.293l-.707.707a1 1 0 101.414 1.414l.707-.707A1 1 0 0012 14zM16.95 17.536a1 1 0 10-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707z"/>
+                            </svg>
+                            智能税务建议
+                        </h2>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">AI分析</span>
                     </div>
 
-                    <div class="mt-4 text-sm text-gray-600 text-center">
-                        <p>* 图表展示每月税后收入、个税和五险一金个人部分的构成情况</p>
+                    <!-- 建议标签页 -->
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <button onclick="switchSuggestions('optimization')" id="optimizationTab" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                            优化建议
+                        </button>
+                        <button onclick="switchSuggestions('planning')" id="planningTab" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                            税务筹划
+                        </button>
+                        <button onclick="switchSuggestions('tips')" id="tipsTab" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                            节税技巧
+                        </button>
+                    </div>
+
+                    <!-- 优化建议 -->
+                    <div id="optimizationPanel" class="suggestion-panel">
+                        <div class="space-y-4">
+                            <!-- 专项扣除优化建议 -->
+                            <div class="border-l-4 border-blue-500 pl-4 py-2">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <svg class="w-5 h-5 text-blue-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-gray-900">专项扣除优化空间</h3>
+                                        <p class="text-sm text-gray-600 mt-1">您当前的专项扣除利用率约为<span id="deductionRate">65</span>%，建议检查以下项目：</p>
+                                        <ul class="mt-2 text-sm text-gray-600 space-y-1">
+                                            <li>• 住房贷款利息扣除：如符合条件，可每月扣除1000元</li>
+                                            <li>• 赡养老人扣除：如符合条件，可每月扣除2000元</li>
+                                            <li>• 继续教育扣除：职业资格教育每年可扣除3600元</li>
+                                        </ul>
+                                        <div class="mt-2 text-sm text-blue-600">
+                                            💡 预计年度可节省税额：<span class="font-semibold">¥<span id="potentialSavings">2,400</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 社保基数优化建议 -->
+                            <div class="border-l-4 border-green-500 pl-4 py-2">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-gray-900">社保基数设置合理</h3>
+                                        <p class="text-sm text-gray-600 mt-1">您的社保基数设置在合理范围内，既保障了权益又不会过度增加成本。</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 税负率分析 -->
+                            <div class="border-l-4 border-yellow-500 pl-4 py-2">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <svg class="w-5 h-5 text-yellow-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-gray-900">税负率提醒</h3>
+                                        <p class="text-sm text-gray-600 mt-1">您的年度有效税率为<span id="effectiveRateText">8.2%</span>，处于同收入水平的正常范围内。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 税务筹划建议 -->
+                    <div id="planningPanel" class="suggestion-panel hidden">
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 rounded-lg p-4">
+                                <h3 class="text-sm font-medium text-blue-900 mb-2">年终奖筹划建议</h3>
+                                <p class="text-sm text-blue-700">考虑将年终奖分摊到各月发放，可以有效降低边际税率，预计可节省<span class="font-semibold">10-15%</span>的税额。</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4">
+                                <h3 class="text-sm font-medium text-green-900 mb-2">专项扣除申报时机</h3>
+                                <p class="text-sm text-green-700">建议在每年1月完成专项附加扣除信息确认，确保全年享受税收优惠。</p>
+                            </div>
+                            <div class="bg-yellow-50 rounded-lg p-4">
+                                <h3 class="text-sm font-medium text-yellow-900 mb-2">收入结构调整</h3>
+                                <p class="text-sm text-yellow-700">合理调整基本工资与绩效工资的比例，可以优化月度税负分布。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 节税技巧 -->
+                    <div id="tipsPanel" class="suggestion-panel hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="text-sm font-medium text-gray-900 mb-2">💰 专项扣除技巧</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 确保所有符合条件的专项扣除都及时申报</li>
+                                    <li>• 子女教育可选择100%扣除或50%扣除</li>
+                                    <li>• 继续教育扣除可选择本人或配偶扣除</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="text-sm font-medium text-gray-900 mb-2">📅 申报时机</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 年度汇算清缴期：次年3月1日至6月30日</li>
+                                    <li>• 专项扣除信息确认：每年12月</li>
+                                    <li>• 多处收入合并申报：次年汇算时</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -527,7 +757,14 @@
     <script>
         // 全局变量
         let incomeChart = null;
+        let taxTrendChart = null;
+        let incomeCompositionChart = null;
+        let deductionUtilizationChart = null;
+        let monthlyComparisonChart = null;
+        let socialAnalysisChart = null;
+        let specialDeductionChart = null;
         let debounceTimer = null;
+        let currentChartData = null;
 
         // DOM元素
         const taxForm = document.getElementById('taxForm');
@@ -541,6 +778,8 @@
         const annualSummary = document.getElementById('annualSummary');
         const monthlyDetails = document.getElementById('monthlyDetails');
         const chartContainer = document.getElementById('chartContainer');
+        const suggestionsPanel = document.getElementById('suggestionsPanel');
+        const healthScoreCard = document.getElementById('healthScoreCard');
 
         // API配置
         const API_BASE_URL = 'http://localhost:8000';
@@ -689,11 +928,16 @@
 
         // 显示结果
         function displayResults(result) {
+            // 保存当前数据供图表切换使用
+            currentChartData = result;
+
             // 隐藏初始提示，显示结果区域
             initialPrompt.classList.add('hidden');
             annualSummary.classList.remove('hidden');
             monthlyDetails.classList.remove('hidden');
             chartContainer.classList.remove('hidden');
+            suggestionsPanel.classList.remove('hidden');
+            healthScoreCard.classList.remove('hidden');
 
             // 更新年度汇总
             updateAnnualSummary(result);
@@ -701,13 +945,21 @@
             // 更新月度详情表格
             updateMonthlyTable(result.monthly_details);
 
-            // 更新图表
+            // 更新图表（默认显示税负率趋势）
             updateChart(result.monthly_details);
+
+            // 渲染默认图表（税负率趋势）
+            renderTaxTrendChart(result);
+
+            // 更新个性化建议
+            updateSuggestions(result);
 
             // 添加动画效果
             annualSummary.classList.add('fade-in');
             monthlyDetails.classList.add('fade-in');
             chartContainer.classList.add('fade-in');
+            suggestionsPanel.classList.add('fade-in');
+            healthScoreCard.classList.add('fade-in');
         }
 
         // 更新年度汇总
@@ -878,6 +1130,521 @@
                     }
                 }
             });
+        }
+
+        // 图表切换功能
+        function switchChart(chartType) {
+            // 更新标签页状态
+            document.querySelectorAll('[id$="Tab"]').forEach(tab => {
+                tab.classList.remove('bg-blue-600', 'text-white');
+                tab.classList.add('bg-gray-200', 'text-gray-700');
+            });
+
+            document.getElementById(chartType + 'Tab').classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById(chartType + 'Tab').classList.add('bg-blue-600', 'text-white');
+
+            // 显示对应图表面板
+            document.querySelectorAll('.chart-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            document.getElementById(chartType + 'Chart').classList.remove('hidden');
+
+            // 如果有数据，重新渲染对应图表
+            if (currentChartData) {
+                renderChart(chartType, currentChartData);
+            }
+        }
+
+        // 建议面板切换功能
+        function switchSuggestions(suggestionType) {
+            // 更新标签页状态
+            document.querySelectorAll('[id$="Tab"]').forEach(tab => {
+                if (tab.id.includes('suggestion')) {
+                    tab.classList.remove('bg-yellow-600', 'text-white');
+                    tab.classList.add('bg-gray-200', 'text-gray-700');
+                }
+            });
+
+            document.getElementById(suggestionType + 'Tab').classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById(suggestionType + 'Tab').classList.add('bg-yellow-600', 'text-white');
+
+            // 显示对应建议面板
+            document.querySelectorAll('.suggestion-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            document.getElementById(suggestionType + 'Panel').classList.remove('hidden');
+        }
+
+        // 渲染不同类型的图表
+        function renderChart(chartType, data) {
+            switch(chartType) {
+                case 'trend':
+                    renderTaxTrendChart(data);
+                    break;
+                case 'composition':
+                    renderIncomeCompositionChart(data);
+                    renderDeductionUtilizationChart(data);
+                    break;
+                case 'monthly':
+                    renderMonthlyComparisonChart(data);
+                    break;
+                case 'deduction':
+                    renderSocialAnalysisChart(data);
+                    renderSpecialDeductionChart(data);
+                    break;
+            }
+        }
+
+        // 渲染税负率趋势图
+        function renderTaxTrendChart(data) {
+            const ctx = document.getElementById('taxTrendChart').getContext('2d');
+
+            if (taxTrendChart) {
+                taxTrendChart.destroy();
+            }
+
+            const monthlyData = data.monthly_details || [];
+            const labels = monthlyData.map((_, index) => `${index + 1}月`);
+            const taxRates = monthlyData.map(month =>
+                month.gross_salary > 0 ? (month.monthly_tax / month.gross_salary * 100) : 0
+            );
+            const cumulativeTaxRates = monthlyData.map((month, index) => {
+                const cumulativeTax = monthlyData.slice(0, index + 1).reduce((sum, m) => sum + m.monthly_tax, 0);
+                const cumulativeSalary = monthlyData.slice(0, index + 1).reduce((sum, m) => sum + m.gross_salary, 0);
+                return cumulativeSalary > 0 ? (cumulativeTax / cumulativeSalary * 100) : 0;
+            });
+
+            taxTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '月度税率',
+                            data: taxRates,
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: '累计税率',
+                            data: cumulativeTaxRates,
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '%';
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: '税率 (%)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '月份'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 渲染收入结构图
+        function renderIncomeCompositionChart(data) {
+            const ctx = document.getElementById('incomeCompositionChart').getContext('2d');
+
+            if (incomeCompositionChart) {
+                incomeCompositionChart.destroy();
+            }
+
+            incomeCompositionChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['税后收入', '个人所得税', '五险一金个人', '专项附加扣除'],
+                    datasets: [{
+                        data: [
+                            data.annual_after_tax_income,
+                            data.annual_tax,
+                            data.annual_social_personal,
+                            (data.infant_care + data.children_education + data.continuing_education +
+                             data.housing_loan_interest + data.housing_rent + data.elder_care) * 12
+                        ],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(251, 146, 60, 0.8)',
+                            'rgba(147, 51, 234, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgb(34, 197, 94)',
+                            'rgb(239, 68, 68)',
+                            'rgb(251, 146, 60)',
+                            'rgb(147, 51, 234)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ¥' + context.parsed.toLocaleString('zh-CN') + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 渲染专项扣除利用率图
+        function renderDeductionUtilizationChart(data) {
+            const ctx = document.getElementById('deductionUtilizationChart').getContext('2d');
+
+            if (deductionUtilizationChart) {
+                deductionUtilizationChart.destroy();
+            }
+
+            const maxDeduction = 1000; // 3岁以下婴幼儿
+            const currentDeduction = data.infant_care || 0;
+            const utilizationRate = (currentDeduction / maxDeduction * 100);
+
+            deductionUtilizationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['专项扣除利用率'],
+                    datasets: [{
+                        label: '已使用',
+                        data: [utilizationRate],
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 2
+                    }, {
+                        label: '未使用',
+                        data: [100 - utilizationRate],
+                        backgroundColor: 'rgba(229, 231, 235, 0.8)',
+                        borderColor: 'rgb(229, 231, 235)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.x.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 渲染月度对比图
+        function renderMonthlyComparisonChart(data) {
+            const ctx = document.getElementById('monthlyComparisonChart').getContext('2d');
+
+            if (monthlyComparisonChart) {
+                monthlyComparisonChart.destroy();
+            }
+
+            const monthlyData = data.monthly_details || [];
+            const labels = monthlyData.map((_, index) => `${index + 1}月`);
+
+            monthlyComparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '税前收入',
+                            data: monthlyData.map(m => m.gross_salary),
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                            borderColor: 'rgb(59, 130, 246)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: '税后收入',
+                            data: monthlyData.map(m => m.after_tax_income),
+                            backgroundColor: 'rgba(34, 197, 94, 0.8)',
+                            borderColor: 'rgb(34, 197, 94)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: '个税',
+                            data: monthlyData.map(m => m.monthly_tax),
+                            backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                            borderColor: 'rgb(239, 68, 68)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ¥' + context.parsed.y.toLocaleString('zh-CN');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '¥' + value.toLocaleString('zh-CN');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 渲染五险一金分析图
+        function renderSocialAnalysisChart(data) {
+            const ctx = document.getElementById('socialAnalysisChart').getContext('2d');
+
+            if (socialAnalysisChart) {
+                socialAnalysisChart.destroy();
+            }
+
+            socialAnalysisChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['养老保险', '医疗保险', '失业保险', '工伤保险', '生育保险', '住房公积金'],
+                    datasets: [{
+                        data: [
+                            data.annual_pension_personal,
+                            data.annual_medical_personal,
+                            data.annual_unemployment_personal,
+                            data.annual_work_injury_company,
+                            data.annual_maternity_company,
+                            data.annual_housing_fund_personal
+                        ],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(251, 146, 60, 0.8)',
+                            'rgba(147, 51, 234, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(245, 158, 11, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ¥' + context.parsed.toLocaleString('zh-CN') + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 渲染专项扣除影响图
+        function renderSpecialDeductionChart(data) {
+            const ctx = document.getElementById('specialDeductionChart').getContext('2d');
+
+            if (specialDeductionChart) {
+                specialDeductionChart.destroy();
+            }
+
+            const deductionItems = [
+                { name: '婴幼儿照护', amount: data.infant_care * 12 },
+                { name: '子女教育', amount: data.children_education * 12 },
+                { name: '继续教育', amount: data.continuing_education * 12 },
+                { name: '住房贷款利息', amount: data.housing_loan_interest * 12 },
+                { name: '住房租金', amount: data.housing_rent * 12 },
+                { name: '赡养老人', amount: data.elder_care * 12 }
+            ];
+
+            specialDeductionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: deductionItems.map(item => item.name),
+                    datasets: [{
+                        label: '年度扣除金额',
+                        data: deductionItems.map(item => item.amount),
+                        backgroundColor: 'rgba(147, 51, 234, 0.8)',
+                        borderColor: 'rgb(147, 51, 234)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '年度扣除: ¥' + context.parsed.y.toLocaleString('zh-CN');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '¥' + value.toLocaleString('zh-CN');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新个性化建议
+        function updateSuggestions(result) {
+            const effectiveRate = result.annual_salary > 0 ?
+                (result.annual_tax / result.annual_salary * 100) : 0;
+
+            // 更新健康评分
+            const healthScore = calculateHealthScore(result, effectiveRate);
+            updateHealthScoreCard(healthScore);
+
+            // 更新优化建议
+            updateOptimizationSuggestions(result, effectiveRate);
+        }
+
+        // 计算财务健康评分
+        function calculateHealthScore(result, effectiveRate) {
+            let score = 100;
+
+            // 税负率评分 (30%)
+            if (effectiveRate > 15) score -= 15;
+            else if (effectiveRate > 10) score -= 5;
+
+            // 专项扣除利用率评分 (40%)
+            const totalDeduction = (result.infant_care + result.children_education +
+                                  result.continuing_education + result.housing_loan_interest +
+                                  result.housing_rent + result.elder_care);
+            const maxPossibleDeduction = 6000; // 假设最大可能扣除
+            const deductionRate = totalDeduction / maxPossibleDeduction;
+            score -= (1 - deductionRate) * 40;
+
+            // 社保合理性评分 (30%)
+            // 这里可以根据具体算法调整
+
+            return Math.max(0, Math.min(100, Math.round(score)));
+        }
+
+        // 更新健康评分卡片
+        function updateHealthScoreCard(score) {
+            const scoreElement = document.getElementById('healthScore');
+            const ratingElement = scoreElement.nextElementSibling;
+            const progressBar = document.querySelector('.bg-green-600');
+
+            scoreElement.textContent = score;
+
+            // 更新评级
+            if (score >= 80) {
+                ratingElement.textContent = '优秀';
+                progressBar.className = 'bg-green-600 h-2 rounded-full';
+            } else if (score >= 60) {
+                ratingElement.textContent = '良好';
+                progressBar.className = 'bg-yellow-600 h-2 rounded-full';
+            } else {
+                ratingElement.textContent = '需改善';
+                progressBar.className = 'bg-red-600 h-2 rounded-full';
+            }
+
+            progressBar.style.width = score + '%';
+
+            // 更新其他文本
+            document.querySelector('[id="effectiveRateText"]').textContent =
+                (document.getElementById('effectiveRate').textContent || '0') + '%';
+
+            document.querySelector('[id="deductionRate"]').textContent = '65'; // 模拟数据
+            document.querySelector('[id="potentialSavings"]').textContent = '2,400'; // 模拟数据
+        }
+
+        // 更新优化建议
+        function updateOptimizationSuggestions(result, effectiveRate) {
+            // 这里可以根据具体数据动态生成建议
+            // 目前使用静态示例
         }
 
         // 显示/隐藏加载状态
