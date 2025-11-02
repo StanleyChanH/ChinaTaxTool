@@ -524,22 +524,22 @@
 
                         <!-- 收入结构图 -->
                         <div id="compositionChart" class="chart-panel hidden">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="space-y-8">
                                 <div>
                                     <h3 class="text-lg font-medium text-gray-700 mb-4">年度收入结构分布</h3>
-                                    <div class="relative" style="height: 300px;">
+                                    <div class="relative mx-auto" style="height: 400px; max-width: 400px;">
                                         <canvas id="incomeCompositionChart"></canvas>
                                     </div>
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-medium text-gray-700 mb-4">专项扣除利用率</h3>
-                                    <div class="relative" style="height: 300px;">
+                                    <div class="relative mx-auto" style="height: 400px; max-width: 400px;">
                                         <canvas id="deductionUtilizationChart"></canvas>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-3 text-sm text-gray-600">
-                                <p>* 左图展示各项支出的占比，右图展示专项附加扣除的利用情况</p>
+                                <p>* 上图展示各项支出的占比，下图展示专项附加扣除的利用情况</p>
                             </div>
                         </div>
 
@@ -556,22 +556,22 @@
 
                         <!-- 扣除分析图 -->
                         <div id="deductionChart" class="chart-panel hidden">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="space-y-8">
                                 <div>
                                     <h3 class="text-lg font-medium text-gray-700 mb-4">五险一金扣除分析</h3>
-                                    <div class="relative" style="height: 300px;">
+                                    <div class="relative mx-auto" style="height: 400px; max-width: 400px;">
                                         <canvas id="socialAnalysisChart"></canvas>
                                     </div>
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-medium text-gray-700 mb-4">专项扣除影响分析</h3>
-                                    <div class="relative" style="height: 300px;">
+                                    <div class="relative mx-auto" style="height: 400px; max-width: 400px;">
                                         <canvas id="specialDeductionChart"></canvas>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-3 text-sm text-gray-600">
-                                <p>* 分析各项扣除对税负的具体影响，帮助优化税务筹划</p>
+                                <p>* 上图分析五险一金扣除影响，下图展示专项扣除优化空间</p>
                             </div>
                         </div>
                     </div>
