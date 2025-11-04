@@ -1184,17 +1184,32 @@
                 incomeCompositionChart.destroy();
             }
 
+            // 从输入表单获取专项扣除数据
+            const infantCare = parseFloat(document.getElementById('infantCare')?.value) || 0;
+            const childrenEducation = parseFloat(document.getElementById('childrenEducation')?.value) || 0;
+            const continuingEducation = parseFloat(document.getElementById('continuingEducation')?.value) || 0;
+            const housingLoanInterest = parseFloat(document.getElementById('housingLoanInterest')?.value) || 0;
+            const housingRent = parseFloat(document.getElementById('housingRent')?.value) || 0;
+            const elderCare = parseFloat(document.getElementById('elderCare')?.value) || 0;
+
+            const totalSpecialDeduction = (infantCare + childrenEducation + continuingEducation +
+                                         housingLoanInterest + housingRent + elderCare) * 12;
+
+            // 确保数据有效性，防止NaN
+            const afterTaxIncome = data.annual_after_tax_income || 0;
+            const tax = data.annual_tax || 0;
+            const socialPersonal = data.annual_social_personal || 0;
+
             incomeCompositionChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['税后收入', '个人所得税', '五险一金个人', '专项附加扣除'],
                     datasets: [{
                         data: [
-                            data.annual_after_tax_income,
-                            data.annual_tax,
-                            data.annual_social_personal,
-                            (data.infant_care + data.children_education + data.continuing_education +
-                             data.housing_loan_interest + data.housing_rent + data.elder_care) * 12
+                            afterTaxIncome,
+                            tax,
+                            socialPersonal,
+                            totalSpecialDeduction
                         ],
                         backgroundColor: [
                             'rgba(34, 197, 94, 0.8)',
@@ -1240,23 +1255,52 @@
                 deductionUtilizationChart.destroy();
             }
 
-            const maxDeduction = 1000; // 3岁以下婴幼儿
-            const currentDeduction = data.infant_care || 0;
-            const utilizationRate = (currentDeduction / maxDeduction * 100);
+            // 从输入表单获取专项扣除数据
+            const infantCare = parseFloat(document.getElementById('infantCare')?.value) || 0;
+            const childrenEducation = parseFloat(document.getElementById('childrenEducation')?.value) || 0;
+            const continuingEducation = parseFloat(document.getElementById('continuingEducation')?.value) || 0;
+            const housingLoanInterest = parseFloat(document.getElementById('housingLoanInterest')?.value) || 0;
+            const housingRent = parseFloat(document.getElementById('housingRent')?.value) || 0;
+            const elderCare = parseFloat(document.getElementById('elderCare')?.value) || 0;
+
+            // 各项扣除的最大限额
+            const maxDeductions = {
+                '婴幼儿照护': 2000,
+                '子女教育': 1000,
+                '继续教育': 400,
+                '住房贷款利息': 1000,
+                '住房租金': 1500,
+                '赡养老人': 2000
+            };
+
+            const currentDeductions = {
+                '婴幼儿照护': infantCare,
+                '子女教育': childrenEducation,
+                '继续教育': continuingEducation,
+                '住房贷款利息': housingLoanInterest,
+                '住房租金': housingRent,
+                '赡养老人': elderCare
+            };
+
+            const labels = Object.keys(currentDeductions);
+            const usedData = Object.values(currentDeductions);
+            const unusedData = labels.map((label, index) =>
+                Math.max(0, maxDeductions[label] - currentDeductions[label])
+            );
 
             deductionUtilizationChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['专项扣除利用率'],
+                    labels: labels,
                     datasets: [{
                         label: '已使用',
-                        data: [utilizationRate],
+                        data: usedData,
                         backgroundColor: 'rgba(59, 130, 246, 0.8)',
                         borderColor: 'rgb(59, 130, 246)',
                         borderWidth: 2
                     }, {
                         label: '未使用',
-                        data: [100 - utilizationRate],
+                        data: unusedData,
                         backgroundColor: 'rgba(229, 231, 235, 0.8)',
                         borderColor: 'rgb(229, 231, 235)',
                         borderWidth: 2
@@ -1489,45 +1533,73 @@
         function calculateHealthScore(result, effectiveRate) {
             let score = 100;
 
+            // 确保数值有效
+            if (!result || !effectiveRate || isNaN(effectiveRate)) {
+                return 75; // 默认分数
+            }
+
             // 税负率评分 (30%)
             if (effectiveRate > 15) score -= 15;
             else if (effectiveRate > 10) score -= 5;
 
             // 专项扣除利用率评分 (40%)
-            const totalDeduction = (result.infant_care + result.children_education +
-                                  result.continuing_education + result.housing_loan_interest +
-                                  result.housing_rent + result.elder_care);
+            // 从输入中获取专项扣除数据，而不是从结果中
+            const monthlySalary = parseFloat(document.getElementById('monthlySalary')?.value) || 0;
+            const infantCare = parseFloat(document.getElementById('infantCare')?.value) || 0;
+            const childrenEducation = parseFloat(document.getElementById('childrenEducation')?.value) || 0;
+            const continuingEducation = parseFloat(document.getElementById('continuingEducation')?.value) || 0;
+            const housingLoanInterest = parseFloat(document.getElementById('housingLoanInterest')?.value) || 0;
+            const housingRent = parseFloat(document.getElementById('housingRent')?.value) || 0;
+            const elderCare = parseFloat(document.getElementById('elderCare')?.value) || 0;
+
+            const totalDeduction = infantCare + childrenEducation + continuingEducation +
+                                housingLoanInterest + housingRent + elderCare;
             const maxPossibleDeduction = 6000; // 假设最大可能扣除
             const deductionRate = totalDeduction / maxPossibleDeduction;
-            score -= (1 - deductionRate) * 40;
+            score -= (1 - Math.min(1, deductionRate)) * 40;
 
             // 社保合理性评分 (30%)
             // 这里可以根据具体算法调整
 
-            return Math.max(0, Math.min(100, Math.round(score)));
+            const finalScore = Math.max(0, Math.min(100, Math.round(score)));
+            return isNaN(finalScore) ? 75 : finalScore; // 防止NaN
         }
 
         // 更新健康评分卡片
         function updateHealthScoreCard(score) {
             const scoreElement = document.getElementById('healthScore');
             const ratingElement = scoreElement.nextElementSibling;
-            const progressBar = document.querySelector('.bg-green-600');
+            // 使用更精确的选择器，找到健康评分卡片中的进度条
+            const progressBar = document.querySelector('#healthScoreCard .bg-green-600, #healthScoreCard .bg-yellow-600, #healthScoreCard .bg-red-600');
+
+            if (!scoreElement || !ratingElement) {
+                console.error('Health score elements not found');
+                return;
+            }
 
             scoreElement.textContent = score;
 
             // 更新评级
             if (score >= 80) {
                 ratingElement.textContent = '优秀';
-                progressBar.className = 'bg-green-600 h-2 rounded-full';
+                if (progressBar) {
+                    progressBar.className = 'bg-green-600 h-2 rounded-full';
+                }
             } else if (score >= 60) {
                 ratingElement.textContent = '良好';
-                progressBar.className = 'bg-yellow-600 h-2 rounded-full';
+                if (progressBar) {
+                    progressBar.className = 'bg-yellow-600 h-2 rounded-full';
+                }
             } else {
                 ratingElement.textContent = '需改善';
-                progressBar.className = 'bg-red-600 h-2 rounded-full';
+                if (progressBar) {
+                    progressBar.className = 'bg-red-600 h-2 rounded-full';
+                }
             }
 
-            progressBar.style.width = score + '%';
+            if (progressBar) {
+                progressBar.style.width = score + '%';
+            }
 
             // 更新其他文本
             document.querySelector('[id="effectiveRateText"]').textContent =
