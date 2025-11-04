@@ -206,13 +206,15 @@ logs/
 
 # Screenshot and temporary image files
 screenshots/
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.svg
-*.webp
-# Exclude screenshots but keep any documentation images that are tracked
+# Temporary image files (but keep documentation images used in README)
+temp_screenshots/
+*_temp.*
+*.tmp.png
+*.tmp.jpg
+*.tmp.jpeg
+*.tmp.gif
+*.tmp.svg
+*.tmp.webp
 
 # Temporary files
 *.swp
