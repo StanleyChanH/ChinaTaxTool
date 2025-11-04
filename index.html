@@ -91,12 +91,9 @@
             <!-- 左侧：输入表单 -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-xl shadow-md p-6 sticky top-6">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="mb-6">
                         <h2 class="text-xl font-semibold text-gray-800">参数设置</h2>
-                        <button id="calculateBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
-                            <span id="calculateBtnText">开始计算</span>
-                            <div id="loadingSpinner" class="loading-spinner ml-2 hidden"></div>
-                        </button>
+                        <p class="text-sm text-gray-600 mt-1">调整参数将自动计算结果</p>
                     </div>
 
                     <form id="taxForm" class="space-y-6">
@@ -710,7 +707,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">开始计算您的个人所得税</h3>
-                        <p class="text-gray-600 mb-6">请在左侧输入您的收入和扣除信息，然后点击"开始计算"按钮查看详细结果。</p>
+                        <p class="text-gray-600 mb-6">请在左侧输入您的收入和扣除信息，系统将自动计算并显示详细结果。</p>
                         <div class="text-left bg-white rounded-lg p-4 text-sm">
                             <h4 class="font-medium text-gray-700 mb-2">计算器特点：</h4>
                             <ul class="space-y-1 text-gray-600">
@@ -756,7 +753,6 @@
 
     <script>
         // 全局变量
-        let incomeChart = null;
         let taxTrendChart = null;
         let incomeCompositionChart = null;
         let deductionUtilizationChart = null;
@@ -768,9 +764,6 @@
 
         // DOM元素
         const taxForm = document.getElementById('taxForm');
-        const calculateBtn = document.getElementById('calculateBtn');
-        const calculateBtnText = document.getElementById('calculateBtnText');
-        const loadingSpinner = document.getElementById('loadingSpinner');
         const errorMessage = document.getElementById('errorMessage');
         const errorText = document.getElementById('errorText');
         const successMessage = document.getElementById('successMessage');
@@ -792,13 +785,6 @@
 
         // 初始化事件监听器
         function initializeEventListeners() {
-            // 表单提交事件
-            calculateBtn.addEventListener('click', handleCalculate);
-            taxForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                handleCalculate();
-            });
-
             // 输入框变化事件（带防抖）
             const inputs = taxForm.querySelectorAll('input, select');
             inputs.forEach(input => {
@@ -945,9 +931,6 @@
             // 更新月度详情表格
             updateMonthlyTable(result.monthly_details);
 
-            // 更新图表（默认显示税负率趋势）
-            updateChart(result.monthly_details);
-
             // 渲染默认图表（税负率趋势）
             renderTaxTrendChart(result);
 
@@ -1044,94 +1027,7 @@
             return 'bg-red-100 text-red-800';
         }
 
-        // 更新图表
-        function updateChart(monthlyDetails) {
-            const ctx = document.getElementById('incomeChart').getContext('2d');
-
-            // 准备图表数据
-            const labels = monthlyDetails.map(m => `${m.month}月`);
-            const afterTaxIncomeData = monthlyDetails.map(m => m.after_tax_income);
-            const taxData = monthlyDetails.map(m => m.monthly_tax);
-            const socialData = monthlyDetails.map(m => m.social_personal_total);
-
-            // 销毁现有图表
-            if (incomeChart) {
-                incomeChart.destroy();
-            }
-
-            // 创建新图表
-            incomeChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: '税后收入',
-                            data: afterTaxIncomeData,
-                            backgroundColor: 'rgba(34, 197, 94, 0.8)',
-                            borderColor: 'rgba(34, 197, 94, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: '个人所得税',
-                            data: taxData,
-                            backgroundColor: 'rgba(239, 68, 68, 0.8)',
-                            borderColor: 'rgba(239, 68, 68, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: '五险一金(个人)',
-                            data: socialData,
-                            backgroundColor: 'rgba(251, 146, 60, 0.8)',
-                            borderColor: 'rgba(251, 146, 60, 1)',
-                            borderWidth: 1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            stacked: true,
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            stacked: true,
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '¥' + value.toLocaleString('zh-CN');
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += '¥' + context.parsed.y.toLocaleString('zh-CN', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    });
-                                    return label;
-                                }
-                            }
-                        },
-                        legend: {
-                            position: 'top',
-                        }
-                    }
-                }
-            });
-        }
-
+        
         // 图表切换功能
         function switchChart(chartType) {
             // 更新标签页状态
@@ -1206,11 +1102,11 @@
             const monthlyData = data.monthly_details || [];
             const labels = monthlyData.map((_, index) => `${index + 1}月`);
             const taxRates = monthlyData.map(month =>
-                month.gross_salary > 0 ? (month.monthly_tax / month.gross_salary * 100) : 0
+                month.salary > 0 ? (month.monthly_tax / month.salary * 100) : 0
             );
             const cumulativeTaxRates = monthlyData.map((month, index) => {
                 const cumulativeTax = monthlyData.slice(0, index + 1).reduce((sum, m) => sum + m.monthly_tax, 0);
-                const cumulativeSalary = monthlyData.slice(0, index + 1).reduce((sum, m) => sum + m.gross_salary, 0);
+                const cumulativeSalary = monthlyData.slice(0, index + 1).reduce((sum, m) => sum + m.salary, 0);
                 return cumulativeSalary > 0 ? (cumulativeTax / cumulativeSalary * 100) : 0;
             });
 
@@ -1416,7 +1312,7 @@
                     datasets: [
                         {
                             label: '税前收入',
-                            data: monthlyData.map(m => m.gross_salary),
+                            data: monthlyData.map(m => m.salary),
                             backgroundColor: 'rgba(59, 130, 246, 0.8)',
                             borderColor: 'rgb(59, 130, 246)',
                             borderWidth: 2
@@ -1649,15 +1545,8 @@
 
         // 显示/隐藏加载状态
         function showLoading(show) {
-            if (show) {
-                calculateBtn.disabled = true;
-                calculateBtnText.textContent = '计算中...';
-                loadingSpinner.classList.remove('hidden');
-            } else {
-                calculateBtn.disabled = false;
-                calculateBtnText.textContent = '开始计算';
-                loadingSpinner.classList.add('hidden');
-            }
+            // 由于现在是自动计算，暂时不需要加载状态显示
+            // 可以在这里添加其他加载指示器，比如在计算区域显示加载状态
         }
 
         // 显示错误消息
