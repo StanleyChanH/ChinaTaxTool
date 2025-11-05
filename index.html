@@ -36,101 +36,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 暗色模式样式 */
-        .dark {
-            background-color: #1a202c;
-            color: #e2e8f0;
-        }
-
-        .dark .bg-white {
-            background-color: #2d3748;
-        }
-
-        .dark .bg-gray-50 {
-            background-color: #374151;
-        }
-
-        .dark .bg-gray-100 {
-            background-color: #4b5563;
-        }
-
-        .dark .bg-gray-200 {
-            background-color: #4b5563;
-        }
-
-        .dark .bg-blue-50 {
-            background-color: #2c5282;
-        }
-
-        .dark .bg-green-50 {
-            background-color: #2f855a;
-        }
-
-        .dark .bg-red-50 {
-            background-color: #742a2a;
-        }
-
-        .dark .bg-yellow-50 {
-            background-color: #744210;
-        }
-
-        .dark .text-gray-800 {
-            color: #e2e8f0;
-        }
-
-        .dark .text-gray-700 {
-            color: #e2e8f0;
-        }
-
-        .dark .text-gray-600 {
-            color: #cbd5e0;
-        }
-
-        .dark .text-gray-500 {
-            color: #a0aec0;
-        }
-
-        .dark .text-gray-900 {
-            color: #f7fafc;
-        }
-
-        .dark .border-gray-200 {
-            border-color: #4b5563;
-        }
-
-        .dark .border-gray-300 {
-            border-color: #4b5563;
-        }
-
-        .dark input, .dark select {
-            background-color: #374151;
-            color: #e2e8f0;
-            border-color: #4b5563;
-        }
-
-        .dark input:focus, .dark select:focus {
-            border-color: #4299e1;
-        }
-
-        .dark table {
-            background-color: #2d3748;
-        }
-
-        .dark th {
-            background-color: #374151;
-            color: #e2e8f0;
-        }
-
-        .dark td {
-            border-color: #4b5563;
-            color: #e2e8f0;
-        }
-
-        /* 过渡动画 */
-        * {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-
+  
+  
         .fade-in {
             animation: fadeIn 0.3s ease-in;
         }
@@ -162,12 +69,6 @@
                     <p class="text-blue-100 text-sm md:text-base mt-1">基于2019年新个税法 · 年度累计预扣预缴法</p>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <!-- 暗色模式切换按钮 -->
-                    <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-blue-500 transition-colors" title="切换暗色模式">
-                        <svg class="w-6 h-6 text-white" id="darkModeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0018.954 5.046 9.003 9.003 0 0020.354 15.354zM16.95 7.05A7 7 0 009.05 16.95 7 7 0 0016.95 7.05z"/>
-                        </svg>
-                    </button>
                     <span class="bg-blue-500 px-3 py-1 rounded-full text-sm">专业版</span>
                     <span class="bg-green-500 px-3 py-1 rounded-full text-sm">v1.0</span>
                 </div>
@@ -215,13 +116,25 @@
                                 </svg>
                                 主要收入
                             </h3>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">月度税前工资</label>
-                                <div class="relative">
-                                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">¥</span>
-                                    <input type="number" id="monthly_salary" name="monthly_salary" required
-                                           class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                           placeholder="15000" step="100" min="0">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">月度税前工资</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">¥</span>
+                                        <input type="number" id="monthly_salary" name="monthly_salary" required
+                                               class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="15000" step="100" min="0">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">年终奖金额（可选）</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">¥</span>
+                                        <input type="number" id="annual_bonus" name="annual_bonus" value="0"
+                                               class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="50000" step="1000" min="0">
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">系统将自动对比单独计税和合并计税方案</p>
                                 </div>
                             </div>
                         </div>
@@ -428,31 +341,7 @@
                             </div>
                         </div>
 
-                        <!-- 年终奖计算 -->
-                        <div class="border-b pb-6">
-                            <h3 class="text-lg font-medium text-gray-700 mb-4 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H6.5a2.5 2.5 0 00-.5.5V12"/>
-                                </svg>
-                                年终奖计算
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">年终奖金额</label>
-                                    <div class="relative">
-                                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">¥</span>
-                                        <input type="number" id="annual_bonus" name="annual_bonus" value="0" step="1000" min="0"
-                                               class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                               placeholder="50000">
-                                    </div>
-                                </div>
-                                <button type="button" id="calculateBonus"
-                                        class="w-full bg-yellow-600 text-white py-2 px-4 rounded-lg hover:bg-yellow-700 transition-colors font-medium">
-                                    计算年终奖税额
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                      </form>
                 </div>
             </div>
 
@@ -468,7 +357,7 @@
                     </h2>
 
                     <!-- 关键指标卡片 -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                         <div class="text-center p-4 bg-blue-50 rounded-lg hover:shadow-md transition-shadow">
                             <div class="text-2xl font-bold text-blue-600">¥<span id="annualSalary">0</span></div>
                             <div class="text-sm text-gray-600 mt-1">年度税前总收入</div>
@@ -484,6 +373,76 @@
                         <div class="text-center p-4 bg-purple-50 rounded-lg hover:shadow-md transition-shadow">
                             <div class="text-2xl font-bold text-purple-600"><span id="effectiveRate">0</span>%</div>
                             <div class="text-sm text-gray-600 mt-1">实际有效税率</div>
+                        </div>
+                    </div>
+
+                    <!-- 年终奖对比方案 -->
+                    <div id="bonusComparisonCard" class="hidden mb-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H6.5a2.5 2.5 0 00-.5.5V12"/>
+                            </svg>
+                            年终奖计税方案对比
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- 方案对比 -->
+                            <div id="separateMethodCard" class="bg-white rounded-lg p-3 border ${'border-green-300' || 'border-gray-300'}">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-800">单独计税</h4>
+                                    <span id="separateMethodBadge" class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">标准方法</span>
+                                </div>
+                                <div class="space-y-1 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">总税额：</span>
+                                        <span id="separateTotalTax" class="font-medium">¥0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">税后收入：</span>
+                                        <span id="separateTotalAfterTax" class="font-medium text-green-600">¥0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">有效税率：</span>
+                                        <span id="separateEffectiveRate" class="font-medium">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="mergedMethodCard" class="bg-white rounded-lg p-3 border border-gray-300">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-800">合并计税</h4>
+                                    <span id="mergedMethodBadge" class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">可选方法</span>
+                                </div>
+                                <div class="space-y-1 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">总税额：</span>
+                                        <span id="mergedTotalTax" class="font-medium">¥0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">税后收入：</span>
+                                        <span id="mergedTotalAfterTax" class="font-medium text-green-600">¥0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">有效税率：</span>
+                                        <span id="mergedEffectiveRate" class="font-medium">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 最优方案推荐 -->
+                            <div class="bg-gradient-to-r from-green-100 to-blue-100 rounded-lg p-3 border border-green-300">
+                                <div class="text-center">
+                                    <h4 class="font-medium text-gray-800 mb-2">最优方案推荐</h4>
+                                    <div class="space-y-1">
+                                        <div class="text-lg font-bold text-green-600" id="recommendedMethod">单独计税</div>
+                                        <div class="text-sm text-gray-700">
+                                            可节省：<span id="taxSavings" class="font-semibold text-green-600">¥0</span>
+                                        </div>
+                                        <div class="text-sm text-gray-700">
+                                            最佳税后收入：<span id="bestTotalAfterTax" class="font-semibold text-blue-600">¥0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -507,7 +466,7 @@
                         <div class="mt-3 bg-white rounded-lg p-2">
                             <div class="flex items-center justify-between text-sm">
                                 <span class="text-gray-600">健康度</span>
-                                <span class="text-green-600 font-medium">85/100</span>
+                                <span class="text-green-600 font-medium" id="healthScoreText">85/100</span>
                             </div>
                             <div class="mt-1 w-full bg-gray-200 rounded-full h-2">
                                 <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
@@ -709,96 +668,7 @@
                     </div>
                 </div>
 
-                <!-- 年终奖计算结果 -->
-                <div id="bonusResult" class="bg-white rounded-xl shadow-md p-6 hidden">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
-                            <svg class="w-6 h-6 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H6.5a2.5 2.5 0 00-.5.5V12"/>
-                            </svg>
-                            年终奖税额计算结果
-                        </h2>
-                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">智能优化</span>
-                    </div>
-
-                    <!-- 计算方式对比 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <!-- 单独计税 -->
-                        <div class="border rounded-lg p-4">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="text-lg font-medium text-gray-800">单独计税</h3>
-                                <span id="separateMethodBadge" class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">标准方法</span>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">年终奖金额：</span>
-                                    <span id="separateBonus" class="font-medium">¥0</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">应缴税额：</span>
-                                    <span id="separateTax" class="font-medium text-red-600">¥0</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">税后收入：</span>
-                                    <span id="separateAfterTax" class="font-medium text-green-600">¥0</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">有效税率：</span>
-                                    <span id="separateRate" class="font-medium">0%</span>
-                                </div>
-                                <div class="text-sm text-gray-500 mt-2">
-                                    月度等效：¥<span id="separateMonthly">0</span> (税率：<span id="separateTaxRate">0</span>%)
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 合并计税 -->
-                        <div class="border rounded-lg p-4">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="text-lg font-medium text-gray-800">合并计税</h3>
-                                <span id="mergedMethodBadge" class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">可选方法</span>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">年终奖金额：</span>
-                                    <span id="mergedBonus" class="font-medium">¥0</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">应缴税额：</span>
-                                    <span id="mergedTax" class="font-medium text-red-600">¥0</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">税后收入：</span>
-                                    <span id="mergedAfterTax" class="font-medium text-green-600">¥0</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">有效税率：</span>
-                                    <span id="mergedRate" class="font-medium">0%</span>
-                                </div>
-                                <div class="text-sm text-gray-500 mt-2">
-                                    年度应纳税所得额：¥<span id="mergedTaxableIncome">0</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 最优方案推荐 -->
-                    <div id="bestMethodCard" class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
-                        <div class="flex items-center">
-                            <svg class="w-6 h-6 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                            </svg>
-                            <div class="flex-1">
-                                <h3 class="text-lg font-medium text-gray-800">最优方案推荐</h3>
-                                <p class="text-gray-600 text-sm mt-1">
-                                    推荐<span id="bestMethodName" class="font-semibold text-green-600">单独计税</span>，
-                                    可节省税额 <span id="savedTax" class="font-semibold text-green-600">¥0</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+  
                 <!-- 个性化建议面板 -->
                 <div id="suggestionsPanel" class="bg-white rounded-xl shadow-md p-6 hidden">
                     <div class="flex items-center justify-between mb-6">
@@ -885,15 +755,15 @@
                     <!-- 税务筹划建议 -->
                     <div id="planningPanel" class="suggestion-panel hidden">
                         <div class="space-y-4">
-                            <div class="bg-blue-50 rounded-lg p-4">
+                            <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
                                 <h3 class="text-sm font-medium text-blue-900 mb-2">年终奖筹划建议</h3>
                                 <p class="text-sm text-blue-700">考虑将年终奖分摊到各月发放，可以有效降低边际税率，预计可节省<span class="font-semibold">10-15%</span>的税额。</p>
                             </div>
-                            <div class="bg-green-50 rounded-lg p-4">
+                            <div class="bg-green-50 rounded-lg p-4 border border-green-200">
                                 <h3 class="text-sm font-medium text-green-900 mb-2">专项扣除申报时机</h3>
                                 <p class="text-sm text-green-700">建议在每年1月完成专项附加扣除信息确认，确保全年享受税收优惠。</p>
                             </div>
-                            <div class="bg-yellow-50 rounded-lg p-4">
+                            <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
                                 <h3 class="text-sm font-medium text-yellow-900 mb-2">收入结构调整</h3>
                                 <p class="text-sm text-yellow-700">合理调整基本工资与绩效工资的比例，可以优化月度税负分布。</p>
                             </div>
@@ -903,7 +773,7 @@
                     <!-- 节税技巧 -->
                     <div id="tipsPanel" class="suggestion-panel hidden">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                 <h4 class="text-sm font-medium text-gray-900 mb-2">💰 专项扣除技巧</h4>
                                 <ul class="text-sm text-gray-600 space-y-1">
                                     <li>• 确保所有符合条件的专项扣除都及时申报</li>
@@ -911,7 +781,7 @@
                                     <li>• 继续教育扣除可选择本人或配偶扣除</li>
                                 </ul>
                             </div>
-                            <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                 <h4 class="text-sm font-medium text-gray-900 mb-2">📅 申报时机</h4>
                                 <ul class="text-sm text-gray-600 space-y-1">
                                     <li>• 年度汇算清缴期：次年3月1日至6月30日</li>
@@ -987,9 +857,7 @@
         let debounceTimer = null;
         let currentChartData = null;
 
-        // 暗色模式状态
-        let isDarkMode = false;
-
+    
         // API配置
         const API_BASE_URL = 'http://localhost:8000';
 
@@ -1020,17 +888,7 @@
                 input.addEventListener('change', handleCalculate);
             });
 
-            // 年终奖计算按钮
-            const calculateBonusBtn = document.getElementById('calculateBonus');
-            if (calculateBonusBtn) {
-                calculateBonusBtn.addEventListener('click', handleCalculateBonus);
-            }
-
-            // 暗色模式切换按钮
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {
-                darkModeToggle.addEventListener('click', toggleDarkMode);
-            }
+  
         }
 
         // 加载默认值
@@ -1219,6 +1077,63 @@
             document.getElementById('annualMaternityCompany').textContent = formatNumber(result.annual_maternity_company);
             document.getElementById('annualHousingFundPersonal').textContent = formatNumber(result.annual_housing_fund_personal);
             document.getElementById('annualHousingFundCompany').textContent = formatNumber(result.annual_housing_fund_company);
+
+            // 更新年终奖对比信息
+            updateBonusComparison(result);
+        }
+
+        // 更新年终奖对比信息
+        function updateBonusComparison(result) {
+            if (!result.bonus_comparison || result.annual_bonus <= 0) {
+                document.getElementById('bonusComparisonCard').classList.add('hidden');
+                return;
+            }
+
+            const comparison = result.bonus_comparison;
+            const bonusComparisonCard = document.getElementById('bonusComparisonCard');
+
+            // 显示年终奖对比卡片
+            bonusComparisonCard.classList.remove('hidden');
+
+            // 更新单独计税方案
+            document.getElementById('separateTotalTax').textContent = `¥${comparison.separate_total_tax.toLocaleString()}`;
+            document.getElementById('separateTotalAfterTax').textContent = `¥${comparison.separate_total_after_tax.toLocaleString()}`;
+            document.getElementById('separateEffectiveRate').textContent = `${comparison.separate_effective_rate}%`;
+
+            // 更新合并计税方案
+            document.getElementById('mergedTotalTax').textContent = `¥${comparison.merged_total_tax.toLocaleString()}`;
+            document.getElementById('mergedTotalAfterTax').textContent = `¥${comparison.merged_total_after_tax.toLocaleString()}`;
+            document.getElementById('mergedEffectiveRate').textContent = `${comparison.merged_effective_rate}%`;
+
+            // 更新最优方案推荐
+            const recommendedMethodText = comparison.recommended_method === 'separate' ? '单独计税' : '合并计税';
+            document.getElementById('recommendedMethod').textContent = recommendedMethodText;
+            document.getElementById('taxSavings').textContent = `¥${comparison.tax_savings.toLocaleString()}`;
+            document.getElementById('bestTotalAfterTax').textContent = `¥${comparison.best_total_after_tax.toLocaleString()}`;
+
+            // 更新方案卡片的样式
+            const separateCard = document.getElementById('separateMethodCard');
+            const mergedCard = document('mergedMethodCard');
+            const separateBadge = document.getElementById('separateMethodBadge');
+            const mergedBadge = document.getElementById('mergedMethodBadge');
+
+            if (comparison.recommended_method === 'separate') {
+                separateCard.className = 'bg-white rounded-lg p-3 border-2 border-green-500 ring-2 ring-green-200';
+                separateBadge.className = 'text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full';
+                separateBadge.textContent = '推荐';
+
+                mergedCard.className = 'bg-white rounded-lg p-3 border border-gray-300';
+                mergedBadge.className = 'text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full';
+                mergedBadge.textContent = '可选';
+            } else {
+                mergedCard.className = 'bg-white rounded-lg p-3 border-2 border-green-500 ring-2 ring-green-200';
+                mergedBadge.className = 'text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full';
+                mergedBadge.textContent = '推荐';
+
+                separateCard.className = 'bg-white rounded-lg p-3 border border-gray-300';
+                separateBadge.className = 'text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full';
+                separateBadge.textContent = '标准方法';
+            }
         }
 
         // 更新月度详情表格
@@ -1294,8 +1209,10 @@
         // 建议面板切换功能
         function switchSuggestions(suggestionType) {
             // 更新标签页状态
-            document.querySelectorAll('[id$="Tab"]').forEach(tab => {
-                if (tab.id.includes('suggestion')) {
+            const tabs = ['optimizationTab', 'planningTab', 'tipsTab'];
+            tabs.forEach(tabId => {
+                const tab = document.getElementById(tabId);
+                if (tab) {
                     tab.classList.remove('bg-yellow-600', 'text-white');
                     tab.classList.add('bg-gray-200', 'text-gray-700');
                 }
@@ -1425,12 +1342,12 @@
             }
 
             // 从输入表单获取专项扣除数据
-            const infantCare = parseFloat(document.getElementById('infantCare')?.value) || 0;
-            const childrenEducation = parseFloat(document.getElementById('childrenEducation')?.value) || 0;
-            const continuingEducation = parseFloat(document.getElementById('continuingEducation')?.value) || 0;
-            const housingLoanInterest = parseFloat(document.getElementById('housingLoanInterest')?.value) || 0;
-            const housingRent = parseFloat(document.getElementById('housingRent')?.value) || 0;
-            const elderCare = parseFloat(document.getElementById('elderCare')?.value) || 0;
+            const infantCare = parseFloat(document.getElementById('infant_care')?.value) || 0;
+            const childrenEducation = parseFloat(document.getElementById('children_education')?.value) || 0;
+            const continuingEducation = parseFloat(document.getElementById('continuing_education')?.value) || 0;
+            const housingLoanInterest = parseFloat(document.getElementById('housing_loan_interest')?.value) || 0;
+            const housingRent = parseFloat(document.getElementById('housing_rent')?.value) || 0;
+            const elderCare = parseFloat(document.getElementById('elder_care')?.value) || 0;
 
             const totalSpecialDeduction = (infantCare + childrenEducation + continuingEducation +
                                          housingLoanInterest + housingRent + elderCare) * 12;
@@ -1496,12 +1413,12 @@
             }
 
             // 从输入表单获取专项扣除数据
-            const infantCare = parseFloat(document.getElementById('infantCare')?.value) || 0;
-            const childrenEducation = parseFloat(document.getElementById('childrenEducation')?.value) || 0;
-            const continuingEducation = parseFloat(document.getElementById('continuingEducation')?.value) || 0;
-            const housingLoanInterest = parseFloat(document.getElementById('housingLoanInterest')?.value) || 0;
-            const housingRent = parseFloat(document.getElementById('housingRent')?.value) || 0;
-            const elderCare = parseFloat(document.getElementById('elderCare')?.value) || 0;
+            const infantCare = parseFloat(document.getElementById('infant_care')?.value) || 0;
+            const childrenEducation = parseFloat(document.getElementById('children_education')?.value) || 0;
+            const continuingEducation = parseFloat(document.getElementById('continuing_education')?.value) || 0;
+            const housingLoanInterest = parseFloat(document.getElementById('housing_loan_interest')?.value) || 0;
+            const housingRent = parseFloat(document.getElementById('housing_rent')?.value) || 0;
+            const elderCare = parseFloat(document.getElementById('elder_care')?.value) || 0;
 
             // 各项扣除的最大限额
             const maxDeductions = {
@@ -1784,13 +1701,13 @@
 
             // 专项扣除利用率评分 (40%)
             // 从输入中获取专项扣除数据，而不是从结果中
-            const monthlySalary = parseFloat(document.getElementById('monthlySalary')?.value) || 0;
-            const infantCare = parseFloat(document.getElementById('infantCare')?.value) || 0;
-            const childrenEducation = parseFloat(document.getElementById('childrenEducation')?.value) || 0;
-            const continuingEducation = parseFloat(document.getElementById('continuingEducation')?.value) || 0;
-            const housingLoanInterest = parseFloat(document.getElementById('housingLoanInterest')?.value) || 0;
-            const housingRent = parseFloat(document.getElementById('housingRent')?.value) || 0;
-            const elderCare = parseFloat(document.getElementById('elderCare')?.value) || 0;
+            const monthlySalary = parseFloat(document.getElementById('monthly_salary')?.value) || 0;
+            const infantCare = parseFloat(document.getElementById('infant_care')?.value) || 0;
+            const childrenEducation = parseFloat(document.getElementById('children_education')?.value) || 0;
+            const continuingEducation = parseFloat(document.getElementById('continuing_education')?.value) || 0;
+            const housingLoanInterest = parseFloat(document.getElementById('housing_loan_interest')?.value) || 0;
+            const housingRent = parseFloat(document.getElementById('housing_rent')?.value) || 0;
+            const elderCare = parseFloat(document.getElementById('elder_care')?.value) || 0;
 
             const totalDeduction = infantCare + childrenEducation + continuingEducation +
                                 housingLoanInterest + housingRent + elderCare;
@@ -1839,6 +1756,20 @@
 
             if (progressBar) {
                 progressBar.style.width = score + '%';
+            }
+
+            // 更新健康度文本
+            const healthScoreText = document.getElementById('healthScoreText');
+            if (healthScoreText) {
+                healthScoreText.textContent = score + '/100';
+                // 更新颜色
+                if (score >= 80) {
+                    healthScoreText.className = 'text-green-600 font-medium';
+                } else if (score >= 60) {
+                    healthScoreText.className = 'text-yellow-600 font-medium';
+                } else {
+                    healthScoreText.className = 'text-red-600 font-medium';
+                }
             }
 
             // 更新其他文本
@@ -1927,180 +1858,7 @@
             }
         }
 
-        // 年终奖计算功能
-        async function handleCalculateBonus() {
-            const bonusInput = getBonusInput();
-            if (!bonusInput) return;
-
-            try {
-                const response = await fetch('http://localhost:8000/calculate-bonus', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(bonusInput),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                displayBonusResult(result);
-            } catch (error) {
-                console.error('计算年终奖个税出错:', error);
-                alert('计算年终奖个税出错，请检查输入参数');
-            }
-        }
-
-        function getBonusInput() {
-            const annualBonus = parseFloat(document.getElementById('annual_bonus').value) || 0;
-            const monthlySalary = parseFloat(document.getElementById('monthly_salary').value) || 0;
-
-            if (annualBonus <= 0) {
-                alert('请输入有效的年终奖金额');
-                return null;
-            }
-
-            if (monthlySalary <= 0) {
-                alert('请先输入月度工资信息');
-                return null;
-            }
-
-            // 获取社保公积金信息（从主表单获取）
-            const socialInsuranceBase = parseFloat(document.getElementById('social_insurance_base').value) || monthlySalary;
-            const housingFundBase = parseFloat(document.getElementById('housing_fund_base').value) || monthlySalary;
-            const baseUpperLimit = parseFloat(document.getElementById('base_upper_limit').value) || 0;
-            const baseLowerLimit = parseFloat(document.getElementById('base_lower_limit').value) || 0;
-
-            // 获取专项扣除信息
-            const infantCare = parseFloat(document.getElementById('infant_care').value) || 0;
-            const childrenEducation = parseFloat(document.getElementById('children_education').value) || 0;
-            const continuingEducation = parseFloat(document.getElementById('continuing_education').value) || 0;
-            const housingLoanInterest = parseFloat(document.getElementById('housing_loan_interest').value) || 0;
-            const housingRent = parseFloat(document.getElementById('housing_rent').value) || 0;
-            const elderCare = parseFloat(document.getElementById('elder_care').value) || 0;
-
-            return {
-                annual_bonus: annualBonus,
-                monthly_salary: monthlySalary,
-                social_insurance_base: socialInsuranceBase,
-                housing_fund_base: housingFundBase,
-                base_upper_limit: baseUpperLimit,
-                base_lower_limit: baseLowerLimit,
-                infant_care: infantCare,
-                children_education: childrenEducation,
-                continuing_education: continuingEducation,
-                housing_loan_interest: housingLoanInterest,
-                housing_rent: housingRent,
-                elder_care: elderCare
-            };
-        }
-
-        function displayBonusResult(result) {
-            const bonusResultsDiv = document.getElementById('bonusResult');
-            const recommendedMethod = result.best_method === 'separate' ? '单独计税' : '合并计税';
-
-            // 显示结果容器
-            bonusResultsDiv.classList.remove('hidden');
-
-            bonusResultsDiv.innerHTML = `
-                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-4">
-                        年终奖个税计算结果
-                    </h3>
-
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <!-- 单独计税结果 -->
-                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border ${result.best_method === 'separate' ? 'border-green-500 ring-2 ring-green-200' : 'border-gray-200 dark:border-gray-700'}">
-                            <div class="flex items-center justify-between mb-3">
-                                <h4 class="font-semibold text-gray-800 dark:text-gray-200">单独计税</h4>
-                                ${result.best_method === 'separate' ? '<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">推荐</span>' : ''}
-                            </div>
-                            <div class="space-y-2 text-sm">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">年终奖金额：</span>
-                                    <span class="font-medium">¥${result.separate_after_tax.toLocaleString()}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">个税金额：</span>
-                                    <span class="font-medium text-red-600">¥${result.separate_tax.toLocaleString()}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">有效税率：</span>
-                                    <span class="font-medium">${result.separate_effective_rate}%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 合并计税结果 -->
-                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border ${result.best_method === 'merged' ? 'border-green-500 ring-2 ring-green-200' : 'border-gray-200 dark:border-gray-700'}">
-                            <div class="flex items-center justify-between mb-3">
-                                <h4 class="font-semibold text-gray-800 dark:text-gray-200">合并计税</h4>
-                                ${result.best_method === 'merged' ? '<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">推荐</span>' : ''}
-                            </div>
-                            <div class="space-y-2 text-sm">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">年终奖金额：</span>
-                                    <span class="font-medium">¥${result.merged_after_tax.toLocaleString()}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">个税金额：</span>
-                                    <span class="font-medium text-red-600">¥${result.merged_tax.toLocaleString()}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">有效税率：</span>
-                                    <span class="font-medium">${result.merged_effective_rate}%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 最优方案总结 -->
-                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                        <div class="flex items-center mb-2">
-                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                            </svg>
-                            <h4 class="font-semibold text-blue-800 dark:text-blue-200">最优方案建议</h4>
-                        </div>
-                        <p class="text-blue-700 dark:text-blue-300 mb-2">
-                            推荐 <strong>${recommendedMethod}</strong>，税后收入 <strong>¥${result.best_after_tax.toLocaleString()}</strong>
-                        </p>
-                        ${result.saved_tax > 0 ? `<p class="text-green-600 dark:text-green-400 text-sm">相比另一种方案可节省 ¥${result.saved_tax.toLocaleString()} 个税</p>` : ''}
-                    </div>
-                </div>
-            `;
-        }
-
-        // 暗色模式功能
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('darkMode', isDark);
-
-            // 更新按钮图标
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const icon = darkModeToggle.querySelector('svg');
-            if (isDark) {
-                icon.innerHTML = '<path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/>';
-            } else {
-                icon.innerHTML = '<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>';
-            }
-        }
-
-        function loadDarkModePreference() {
-            const darkMode = localStorage.getItem('darkMode');
-            if (darkMode === 'true') {
-                document.documentElement.classList.add('dark');
-                // 更新按钮图标
-                const darkModeToggle = document.getElementById('darkModeToggle');
-                if (darkModeToggle) {
-                    const icon = darkModeToggle.querySelector('svg');
-                    icon.innerHTML = '<path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/>';
-                }
-            }
-        }
-    </script>
+  
+      </script>
 </body>
 </html>

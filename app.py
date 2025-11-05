@@ -32,6 +32,9 @@ class TaxInput(BaseModel):
     # 基本信息
     monthly_salary: float = Field(..., description="月度税前工资(元)")
 
+    # 年终奖信息
+    annual_bonus: float = Field(0.0, description="年终奖金额(元)")
+
     # 社保公积金基数
     social_insurance_base: Optional[float] = Field(None, description="社保缴费基数(元)")
     housing_fund_base: Optional[float] = Field(None, description="公积金缴费基数(元)")
@@ -89,6 +92,7 @@ class TaxResult(BaseModel):
 
     # 年度汇总
     annual_salary: float
+    annual_bonus: float
     annual_tax: float
     annual_after_tax_income: float
     annual_social_personal: float
@@ -106,73 +110,37 @@ class TaxResult(BaseModel):
     annual_housing_fund_personal: float
     annual_housing_fund_company: float
 
+    # 年终奖计算对比
+    bonus_comparison: Optional['BonusComparison'] = None
+
     # 月度详情
     monthly_details: List[MonthlyDetail]
 
 
-class BonusInput(BaseModel):
-    """年终奖计算输入参数"""
+class BonusComparison(BaseModel):
+    """年终奖计算对比结果"""
 
-    annual_bonus: float = Field(..., description="年终奖金额(元)")
-    monthly_salary: float = Field(..., description="月度税前工资(元)")
-
-    # 社保公积金基数（从工资计算中获取）
-    social_insurance_base: Optional[float] = Field(None, description="社保缴费基数(元)")
-    housing_fund_base: Optional[float] = Field(None, description="公积金缴费基数(元)")
-
-    # 基数上下限
-    base_upper_limit: float = Field(0, description="缴费基数上限(元)")
-    base_lower_limit: float = Field(0, description="缴费基数下限(元)")
-
-    # 个人缴纳比例(%)
-    pension_personal_rate: float = Field(8.0, description="养老保险个人比例(%)")
-    medical_personal_rate: float = Field(2.0, description="医疗保险个人比例(%)")
-    unemployment_personal_rate: float = Field(0.5, description="失业保险个人比例(%)")
-    housing_fund_personal_rate: float = Field(7.0, description="公积金个人比例(%)")
-
-    # 公司缴纳比例(%)
-    pension_company_rate: float = Field(16.0, description="养老保险公司比例(%)")
-    medical_company_rate: float = Field(7.5, description="医疗保险公司比例(%)")
-    unemployment_company_rate: float = Field(0.5, description="失业保险公司比例(%)")
-    work_injury_company_rate: float = Field(0.4, description="工伤保险公司比例(%)")
-    maternity_company_rate: float = Field(0.8, description="生育保险公司比例(%)")
-    housing_fund_company_rate: float = Field(7.0, description="公积金公司比例(%)")
-
-    # 专项附加扣除（月度）
-    infant_care: float = Field(0.0, description="3岁以下婴幼儿照护(元/月)")
-    children_education: float = Field(0.0, description="子女教育(元/月)")
-    continuing_education: float = Field(0.0, description="继续教育(元/月)")
-    housing_loan_interest: float = Field(0.0, description="住房贷款利息(元/月)")
-    housing_rent: float = Field(0.0, description="住房租金(元/月)")
-    elder_care: float = Field(0.0, description="赡养老人(元/月)")
-
-
-class BonusResult(BaseModel):
-    """年终奖计算结果"""
-
-    # 单独计税结果
-    separate_tax: float
-    separate_after_tax: float
+    # 单独计税方案
+    separate_bonus_tax: float
+    separate_bonus_after_tax: float
+    separate_total_tax: float
+    separate_total_after_tax: float
     separate_effective_rate: float
 
-    # 合并计税结果
-    merged_tax: float
-    merged_after_tax: float
+    # 合并计税方案
+    merged_bonus_tax: float
+    merged_bonus_after_tax: float
+    merged_total_tax: float
+    merged_total_after_tax: float
     merged_effective_rate: float
 
     # 最优方案
-    best_method: str  # "separate" 或 "merged"
-    best_tax: float
-    best_after_tax: float
-    saved_tax: float
+    recommended_method: str  # "separate" 或 "merged"
+    tax_savings: float
+    best_total_tax: float
+    best_total_after_tax: float
 
-    # 工资部分税额（用于合并计税）
-    salary_tax: float
 
-    # 详细计算数据
-    separate_monthly_equivalent: float  # 单独计税的月度等效
-    separate_tax_rate: float  # 单独计税适用税率
-    merged_annual_taxable_income: float  # 合并计税的年度应纳税所得额
 
 
 def clamp_value(value: float, min_val: float, max_val: float) -> float:
@@ -374,12 +342,76 @@ def calculate_tax(tax_input: TaxInput) -> TaxResult:
         )
         monthly_details.append(monthly_detail)
 
-    # 计算年度税后总收入
+    # 计算年度税后总收入（不含年终奖）
     annual_after_tax_income = annual_salary - annual_social_personal - annual_tax
+
+    # 年终奖计算和对比
+    bonus_comparison = None
+    if tax_input.annual_bonus > 0:
+        # 计算单独计税方案
+        monthly_equivalent = tax_input.annual_bonus / 12
+        separate_tax_rate, separate_quick_deduction = calculate_tax_rate_and_deduction(monthly_equivalent)
+        separate_bonus_tax = tax_input.annual_bonus * separate_tax_rate / 100 - separate_quick_deduction
+        separate_bonus_tax = max(0, separate_bonus_tax)
+
+        # 计算合并计税方案
+        annual_salary_with_bonus = annual_salary + tax_input.annual_bonus
+        merged_annual_taxable_income = (
+            annual_salary_with_bonus
+            - annual_social_personal
+            - 60000  # 基本减除费用
+            - (tax_input.infant_care + tax_input.children_education +
+               tax_input.continuing_education + tax_input.housing_loan_interest +
+               tax_input.housing_rent + tax_input.elder_care) * 12
+        )
+        merged_annual_taxable_income = max(0, merged_annual_taxable_income)
+
+        merged_tax_rate, merged_quick_deduction = calculate_tax_rate_and_deduction(merged_annual_taxable_income)
+        merged_total_tax = merged_annual_taxable_income * merged_tax_rate / 100 - merged_quick_deduction
+        merged_bonus_tax = max(0, merged_total_tax - annual_tax)  # 年终奖部分应缴税额
+
+        # 计算全年总额对比
+        separate_total_tax = annual_tax + separate_bonus_tax
+        separate_total_after_tax = annual_after_tax_income + (tax_input.annual_bonus - separate_bonus_tax)
+        separate_effective_rate = (separate_total_tax / (annual_salary + tax_input.annual_bonus) * 100) if (annual_salary + tax_input.annual_bonus) > 0 else 0
+
+        merged_total_tax = merged_total_tax
+        merged_total_after_tax = (annual_salary + tax_input.annual_bonus) - annual_social_personal - merged_total_tax
+        merged_effective_rate = (merged_total_tax / (annual_salary + tax_input.annual_bonus) * 100) if (annual_salary + tax_input.annual_bonus) > 0 else 0
+
+        # 确定最优方案
+        if separate_total_tax <= merged_total_tax:
+            recommended_method = "separate"
+            tax_savings = merged_total_tax - separate_total_tax
+            best_total_tax = separate_total_tax
+            best_total_after_tax = separate_total_after_tax
+        else:
+            recommended_method = "merged"
+            tax_savings = separate_total_tax - merged_total_tax
+            best_total_tax = merged_total_tax
+            best_total_after_tax = merged_total_after_tax
+
+        bonus_comparison = BonusComparison(
+            separate_bonus_tax=round(separate_bonus_tax, 2),
+            separate_bonus_after_tax=round(tax_input.annual_bonus - separate_bonus_tax, 2),
+            separate_total_tax=round(separate_total_tax, 2),
+            separate_total_after_tax=round(separate_total_after_tax, 2),
+            separate_effective_rate=round(separate_effective_rate, 2),
+            merged_bonus_tax=round(merged_bonus_tax, 2),
+            merged_bonus_after_tax=round(tax_input.annual_bonus - merged_bonus_tax, 2),
+            merged_total_tax=round(merged_total_tax, 2),
+            merged_total_after_tax=round(merged_total_after_tax, 2),
+            merged_effective_rate=round(merged_effective_rate, 2),
+            recommended_method=recommended_method,
+            tax_savings=round(tax_savings, 2),
+            best_total_tax=round(best_total_tax, 2),
+            best_total_after_tax=round(best_total_after_tax, 2),
+        )
 
     # 返回计算结果
     return TaxResult(
         annual_salary=annual_salary,
+        annual_bonus=tax_input.annual_bonus,
         annual_tax=annual_tax,
         annual_after_tax_income=annual_after_tax_income,
         annual_social_personal=annual_social_personal,
@@ -394,96 +426,11 @@ def calculate_tax(tax_input: TaxInput) -> TaxResult:
         annual_maternity_company=annual_maternity_company,
         annual_housing_fund_personal=annual_housing_fund_personal,
         annual_housing_fund_company=annual_housing_fund_company,
+        bonus_comparison=bonus_comparison,
         monthly_details=monthly_details,
     )
 
 
-def calculate_bonus_tax(bonus_input: BonusInput) -> BonusResult:
-    """
-    年终奖个税计算函数
-    支持单独计税和合并计税两种方式，并推荐最优方案
-    """
-    # 首先计算工资部分的个税
-    tax_input_for_salary = TaxInput(
-        monthly_salary=bonus_input.monthly_salary,
-        social_insurance_base=bonus_input.social_insurance_base,
-        housing_fund_base=bonus_input.housing_fund_base,
-        base_upper_limit=bonus_input.base_upper_limit,
-        base_lower_limit=bonus_input.base_lower_limit,
-        pension_personal_rate=bonus_input.pension_personal_rate,
-        medical_personal_rate=bonus_input.medical_personal_rate,
-        unemployment_personal_rate=bonus_input.unemployment_personal_rate,
-        housing_fund_personal_rate=bonus_input.housing_fund_personal_rate,
-        pension_company_rate=bonus_input.pension_company_rate,
-        medical_company_rate=bonus_input.medical_company_rate,
-        unemployment_company_rate=bonus_input.unemployment_company_rate,
-        work_injury_company_rate=bonus_input.work_injury_company_rate,
-        maternity_company_rate=bonus_input.maternity_company_rate,
-        housing_fund_company_rate=bonus_input.housing_fund_company_rate,
-        infant_care=bonus_input.infant_care,
-        children_education=bonus_input.children_education,
-        continuing_education=bonus_input.continuing_education,
-        housing_loan_interest=bonus_input.housing_loan_interest,
-        housing_rent=bonus_input.housing_rent,
-        elder_care=bonus_input.elder_care,
-    )
-
-    salary_result = calculate_tax(tax_input_for_salary)
-
-    # 1. 单独计税方法
-    # 年终奖除以12个月，按照月度税率表计算
-    monthly_equivalent = bonus_input.annual_bonus / 12
-    separate_tax_rate, separate_quick_deduction = calculate_tax_rate_and_deduction(monthly_equivalent)
-    separate_tax = bonus_input.annual_bonus * separate_tax_rate / 100 - separate_quick_deduction
-    separate_tax = max(0, separate_tax)  # 确保不为负数
-
-    # 2. 合并计税方法
-    # 年终奖并入年度综合所得
-    annual_salary_with_bonus = salary_result.annual_salary + bonus_input.annual_bonus
-    merged_annual_taxable_income = (
-        annual_salary_with_bonus
-        - salary_result.annual_social_personal
-        - 60000  # 基本减除费用
-        - (bonus_input.infant_care + bonus_input.children_education +
-           bonus_input.continuing_education + bonus_input.housing_loan_interest +
-           bonus_input.housing_rent + bonus_input.elder_care) * 12
-    )
-    merged_annual_taxable_income = max(0, merged_annual_taxable_income)
-
-    merged_tax_rate, merged_quick_deduction = calculate_tax_rate_and_deduction(merged_annual_taxable_income)
-    merged_total_tax = merged_annual_taxable_income * merged_tax_rate / 100 - merged_quick_deduction
-    merged_tax = max(0, merged_total_tax - salary_result.annual_tax)  # 年终奖部分应缴税额
-
-    # 3. 计算有效税率
-    separate_effective_rate = (separate_tax / bonus_input.annual_bonus * 100) if bonus_input.annual_bonus > 0 else 0
-    merged_effective_rate = (merged_tax / bonus_input.annual_bonus * 100) if bonus_input.annual_bonus > 0 else 0
-
-    # 4. 确定最优方案
-    if separate_tax <= merged_tax:
-        best_method = "separate"
-        best_tax = separate_tax
-        saved_tax = merged_tax - separate_tax
-    else:
-        best_method = "merged"
-        best_tax = merged_tax
-        saved_tax = separate_tax - merged_tax
-
-    return BonusResult(
-        separate_tax=round(separate_tax, 2),
-        separate_after_tax=round(bonus_input.annual_bonus - separate_tax, 2),
-        separate_effective_rate=round(separate_effective_rate, 2),
-        merged_tax=round(merged_tax, 2),
-        merged_after_tax=round(bonus_input.annual_bonus - merged_tax, 2),
-        merged_effective_rate=round(merged_effective_rate, 2),
-        best_method=best_method,
-        best_tax=round(best_tax, 2),
-        best_after_tax=round(bonus_input.annual_bonus - best_tax, 2),
-        saved_tax=round(saved_tax, 2),
-        salary_tax=round(salary_result.annual_tax, 2),
-        separate_monthly_equivalent=round(monthly_equivalent, 2),
-        separate_tax_rate=separate_tax_rate,
-        merged_annual_taxable_income=round(merged_annual_taxable_income, 2),
-    )
 
 
 @app.post("/calculate", response_model=TaxResult)
@@ -511,17 +458,6 @@ async def health_check():
     return {"status": "healthy"}
 
 
-@app.post("/calculate-bonus", response_model=BonusResult)
-async def calculate_bonus_endpoint(bonus_input: BonusInput):
-    """
-    年终奖个税计算API接口
-    支持单独计税和合并计税两种方式，返回最优方案建议
-    """
-    try:
-        result = calculate_bonus_tax(bonus_input)
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"计算错误: {str(e)}") from e
 
 
 def main():
